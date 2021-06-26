@@ -1,11 +1,10 @@
 package world.cepi.trap.generator
 
-import net.minestom.server.entity.Player
-import net.minestom.server.item.ItemStack
+import kotlinx.serialization.Serializable
 import net.minestom.server.item.Material
 
-class DamageTrapGenerator : TrapGenerator {
-    override fun giveBlock(player: Player) {
-        player.inventory.addItemStack(ItemStack.of(Material.MAGMA_BLOCK))
-    }
+@Serializable
+class DamageTrapGenerator(val damage: Int) : TrapGenerator() {
+    override val defaultBlock = Material.MAGMA_BLOCK
+    override val blockId = 101.toShort()
 }

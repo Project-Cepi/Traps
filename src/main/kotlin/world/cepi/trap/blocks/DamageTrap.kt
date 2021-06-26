@@ -33,6 +33,8 @@ object DamageTrap : CustomBlock(Block.MAGMA_BLOCK, "damage-block") {
     override fun handleContact(instance: Instance, position: BlockPosition, touching: Entity) {
         if (touching !is LivingEntity) return
 
+        // TODO cooldown
+
         touching.damage(DamageType.ON_FIRE,1f)
     }
 

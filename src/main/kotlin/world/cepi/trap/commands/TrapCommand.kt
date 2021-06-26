@@ -5,7 +5,9 @@ import net.minestom.server.entity.Player
 import world.cepi.kstom.command.addSyntax
 import world.cepi.kstom.command.arguments.argumentsFromClass
 import world.cepi.kstom.command.arguments.literal
+import world.cepi.trap.generator.DamageTrapGenerator
 import world.cepi.trap.generator.TrapGenerator
+import kotlin.reflect.full.allSuperclasses
 
 object TrapCommand : Command("trap") {
 
@@ -13,7 +15,7 @@ object TrapCommand : Command("trap") {
 
         val get = "get".literal()
 
-        TrapGenerator::class.sealedSubclasses.forEach {
+        TrapGenerator.trapGenerators.forEach {
 
             val generatedArgs = argumentsFromClass(it)
 

@@ -5,7 +5,7 @@ plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.5.10"
     // Kotlinx serialization for any data format
-    kotlin("plugin.serialization") version "1.4.21"
+    kotlin("plugin.serialization") version "1.5.0"
     // Shade the plugin
     id("com.github.johnrengelman.shadow") version "7.0.0"
     // Allow publishing
@@ -40,7 +40,7 @@ dependencies {
     compileOnly("com.github.Minestom:Minestom:804f11c87b")
 
     // Add KStom
-    compileOnly("com.github.Project-Cepi:KStom:d4ec517359")
+    compileOnly("com.github.Project-Cepi:KStom:1a8c13c7a0")
 
     // Add Kepi
     compileOnly("com.github.Project-Cepi:Kepi:3d57f76a43")
@@ -68,10 +68,9 @@ tasks {
     }
 
     // Set name, minimize, and merge service files
-    named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
+    named<ShadowJar>("shadowJar") {
         archiveBaseName.set(project.name)
         mergeServiceFiles()
-        minimize()
     }
 
     test { useJUnitPlatform() }
