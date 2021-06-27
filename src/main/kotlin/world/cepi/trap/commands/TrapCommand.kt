@@ -21,8 +21,8 @@ object TrapCommand : Command("trap") {
 
             val trapName = it.simpleName!!.dropLast("TrapGenerator".length)
 
-            addSyntax(get, trapName.literal(), *generatedArgs.args) { sender, args ->
-                val instance = generatedArgs.createInstance(args, sender)
+            addSyntax(get, trapName.literal(), *generatedArgs.args) {
+                val instance = generatedArgs.createInstance(context, sender)
 
                 instance.giveBlock(sender as Player)
             }

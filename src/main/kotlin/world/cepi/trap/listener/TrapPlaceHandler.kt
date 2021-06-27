@@ -1,6 +1,7 @@
 package world.cepi.trap.listener
 
 import net.minestom.server.event.player.PlayerBlockPlaceEvent
+import net.minestom.server.tag.Tag
 import world.cepi.kstom.item.get
 import world.cepi.trap.generator.TrapGenerator
 import kotlin.reflect.KClass
@@ -10,7 +11,11 @@ object TrapPlaceHandler {
     fun onPlace(event: PlayerBlockPlaceEvent) = with(event) {
         val item = player.getItemInHand(hand)
 
-        val trapGeneratorClass = item.meta.get<KClass<out TrapGenerator>>("blockClass") ?: return
+        val rawClassName = item.meta.getTag(Tag.String("blockClass"))
+
+        val trapGeneratorClass = TrapGenerator.trapGenerators.firstOrNull {
+            it.simpleName!! == rawClassName
+        }?: return
 
         val trapGenerator = item.meta.get("block", trapGeneratorClass) ?: return
 
