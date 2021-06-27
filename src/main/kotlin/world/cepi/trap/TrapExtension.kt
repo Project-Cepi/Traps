@@ -1,10 +1,13 @@
 package world.cepi.trap
 
 import net.minestom.server.extensions.Extension;
+import world.cepi.kstom.Manager
 import world.cepi.kstom.command.register
 import world.cepi.kstom.command.unregister
 import world.cepi.kstom.event.listenOnly
+import world.cepi.trap.blocks.DamageTrap
 import world.cepi.trap.commands.TrapCommand
+import world.cepi.trap.generator.DamageTrapGenerator
 import world.cepi.trap.generator.TrapGenerator
 import world.cepi.trap.listener.TrapPlaceHandler
 
@@ -15,6 +18,8 @@ class TrapExtension : Extension() {
         TrapCommand.register()
 
         eventNode.listenOnly(TrapPlaceHandler::onPlace)
+
+        Manager.block.registerCustomBlock(DamageTrap)
 
         val trapAmount = TrapGenerator.trapGenerators.size
 

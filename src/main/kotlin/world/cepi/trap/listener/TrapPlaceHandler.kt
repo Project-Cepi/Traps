@@ -1,6 +1,8 @@
 package world.cepi.trap.listener
 
 import net.minestom.server.event.player.PlayerBlockPlaceEvent
+import net.minestom.server.instance.block.Block
+import net.minestom.server.item.Material
 import net.minestom.server.tag.Tag
 import world.cepi.kstom.item.get
 import world.cepi.trap.generator.TrapGenerator
@@ -15,11 +17,15 @@ object TrapPlaceHandler {
 
         val trapGeneratorClass = TrapGenerator.trapGenerators.firstOrNull {
             it.simpleName!! == rawClassName
-        }?: return
+        } ?: return
 
         val trapGenerator = item.meta.get("block", trapGeneratorClass) ?: return
 
-        blockData = trapGenerator.generateData()
+        blockStateId = item.meta.getTag(Tag.Short("material"))!!
+
+        blockData = trapGenerator.generateData().also {
+            it.set("material", blockStateId)
+        }
         customBlockId = trapGenerator.blockId
 
     }

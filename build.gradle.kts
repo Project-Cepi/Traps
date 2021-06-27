@@ -37,10 +37,10 @@ dependencies {
     compileOnly(kotlin("reflect"))
 
     // Compile Minestom into project
-    compileOnly("com.github.Minestom:Minestom:804f11c87b")
+    compileOnly("com.github.Minestom:Minestom:edaec0cb6d")
 
     // Add KStom
-    compileOnly("com.github.Project-Cepi:KStom:9e4bc4929f")
+    compileOnly("com.github.Project-Cepi:KStom:9addc51324")
 
     // Add Kepi
     compileOnly("com.github.Project-Cepi:Kepi:3d57f76a43")
@@ -67,7 +67,7 @@ tasks {
         }
     }
 
-    // Set name, minimize, and merge service files
+    // Set name, and merge service files
     named<ShadowJar>("shadowJar") {
         archiveBaseName.set(project.name)
         mergeServiceFiles()

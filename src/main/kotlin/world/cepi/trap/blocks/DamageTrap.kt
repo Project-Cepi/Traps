@@ -1,5 +1,6 @@
 package world.cepi.trap.blocks
 
+import net.minestom.server.collision.BoundingBox
 import net.minestom.server.data.Data
 import net.minestom.server.entity.Entity
 import net.minestom.server.entity.LivingEntity
@@ -26,16 +27,18 @@ object DamageTrap : CustomBlock(Block.MAGMA_BLOCK, "damage-block") {
 
     }
 
-    override fun scheduledUpdate(instance: Instance, position: BlockPosition, blockData: Data?) {
-        super.scheduledUpdate(instance, position, blockData)
-    }
+    override fun update(instance: Instance, position: BlockPosition, blockData: Data?) {
 
-    override fun handleContact(instance: Instance, position: BlockPosition, touching: Entity) {
-        if (touching !is LivingEntity) return
+        val chunk = instance.getChunkAt(position)
+        val entities = instance.getChunkEntities(chunk)
+        val entityBoundingBoxes = entities
+            .filter { !it.isSneaking }
+            .filterIsInstance<LivingEntity>()
+            .filter { position == it.position.toBlockPosition().subtract(0, 1, 0) }
 
-        // TODO cooldown
-
-        touching.damage(DamageType.ON_FIRE,1f)
+        entityBoundingBoxes.forEach {
+            it.damage(DamageType.ON_FIRE, blockData!!.get<Float>("damage")!!)
+        }
     }
 
     override fun getUpdateOption() = UpdateOption(10, TimeUnit.TICK)
