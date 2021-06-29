@@ -6,6 +6,7 @@ import world.cepi.kstom.command.register
 import world.cepi.kstom.command.unregister
 import world.cepi.kstom.event.listenOnly
 import world.cepi.trap.blocks.DamageTrap
+import world.cepi.trap.blocks.FallTrap
 import world.cepi.trap.commands.TrapCommand
 import world.cepi.trap.generator.DamageTrapGenerator
 import world.cepi.trap.generator.TrapGenerator
@@ -20,6 +21,7 @@ class TrapExtension : Extension() {
         eventNode.listenOnly(TrapPlaceHandler::onPlace)
 
         Manager.block.registerCustomBlock(DamageTrap)
+        Manager.block.registerCustomBlock(FallTrap)
 
         val trapAmount = TrapGenerator.trapGenerators.size
 

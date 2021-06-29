@@ -12,6 +12,7 @@ import net.minestom.server.instance.block.CustomBlock
 import net.minestom.server.utils.BlockPosition
 import net.minestom.server.utils.time.TimeUnit
 import net.minestom.server.utils.time.UpdateOption
+import world.cepi.trap.generator.DamageTrapGenerator
 
 object DamageTrap : CustomBlock(Block.MAGMA_BLOCK, "damage-block") {
 
@@ -37,7 +38,7 @@ object DamageTrap : CustomBlock(Block.MAGMA_BLOCK, "damage-block") {
             .filter { position == it.position.toBlockPosition().subtract(0, 1, 0) }
 
         entityBoundingBoxes.forEach {
-            it.damage(DamageType.ON_FIRE, blockData!!.get<Float>("damage")!!)
+            it.damage(DamageType.ON_FIRE, blockData!!.get<Float>(DamageTrapGenerator.damageKey)!!)
         }
     }
 

@@ -7,19 +7,20 @@ import world.cepi.kstom.command.arguments.annotations.DefaultNumber
 import world.cepi.kstom.data.data
 
 @Serializable
-data class DamageTrapGenerator(
-    @param:DefaultNumber(1.0)
-    val damage: Float = 1f,
+data class FallTrapGenerator(
+    @param:DefaultNumber(3.0)
+    val stageAmount: Int = 3,
     @param:DefaultMaterial(Material.MAGMA_BLOCK)
     override val defaultBlock: Material = Material.MAGMA_BLOCK
 ) : TrapGenerator() {
-    override val blockId = 101.toShort()
+    override val blockId = 102.toShort()
 
     override fun generateData() = data {
-        this[damageKey] = damage
+        this["stageAmount"] = stageAmount
     }
 
     companion object {
-        const val damageKey = "damage"
+        const val stageAmountKey = "stageAmount"
+        const val currentStageKey = "currentStage"
     }
 }
