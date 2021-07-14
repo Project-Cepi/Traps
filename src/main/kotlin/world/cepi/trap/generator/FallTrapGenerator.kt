@@ -2,10 +2,7 @@ package world.cepi.trap.generator
 
 import kotlinx.serialization.Serializable
 import net.minestom.server.instance.block.Block
-import net.minestom.server.item.Material
-import world.cepi.kstom.command.arguments.annotations.DefaultBlock
-import world.cepi.kstom.command.arguments.annotations.DefaultMaterial
-import world.cepi.kstom.command.arguments.annotations.DefaultNumber
+import world.cepi.kstom.command.arguments.generation.annotations.*
 import world.cepi.kstom.data.data
 
 @Serializable

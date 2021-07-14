@@ -5,7 +5,7 @@ import net.minestom.server.instance.block.Block
 import net.minestom.server.item.Material
 import net.minestom.server.potion.Potion
 import net.minestom.server.potion.PotionEffect
-import world.cepi.kstom.command.arguments.annotations.*
+import world.cepi.kstom.command.arguments.generation.annotations.*
 import world.cepi.kstom.data.data
 
 @Serializable
