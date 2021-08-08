@@ -1,5 +1,12 @@
 {
   "entrypoint": "${project.group}.${project.mainClass}",
   "name": "${project.name}",
-  "version": "${project.version}"
+  "version": "${project.version}",
+  "dependencies": [
+    "KStom",
+    "Kepi"
+  ],
+  "meta": {
+    "downloadURL": "https://github.com/Project-Cepi/Traps/releases/download/latest/Traps-1.0.0-all.jar"
+  }
 }
