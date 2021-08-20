@@ -1,57 +1,30 @@
 package world.cepi.trap.blocks
 
 import net.kyori.adventure.sound.Sound
-import net.minestom.server.data.Data
-import net.minestom.server.entity.LivingEntity
 import net.minestom.server.entity.Player
-import net.minestom.server.instance.Instance
-import net.minestom.server.instance.block.Block
-import net.minestom.server.instance.block.CustomBlock
+import net.minestom.server.instance.block.BlockHandler
 import net.minestom.server.potion.Potion
 import net.minestom.server.sound.SoundEvent
-import net.minestom.server.utils.BlockPosition
-import net.minestom.server.utils.time.TimeUnit
-import net.minestom.server.utils.time.UpdateOption
+import net.minestom.server.utils.NamespaceID
+import world.cepi.kstom.item.get
 import world.cepi.trap.generator.PotionTrapGenerator
 
-object PotionTrap : CustomBlock(Block.MAGMA_BLOCK, "damage-block") {
+object PotionTrap : BlockHandler {
 
-    override fun getCustomBlockId() = 103.toShort()
-
-    override fun onInteract(player: Player, hand: Player.Hand, blockPosition: BlockPosition, data: Data?) = true
-
-    override fun onDestroy(instance: Instance, blockPosition: BlockPosition, data: Data?) {
-
+    override fun getNamespaceId(): NamespaceID {
+        return NamespaceID.from("cepi:trap_potion")
     }
 
-    override fun onPlace(instance: Instance, blockPosition: BlockPosition, data: Data?) {
+    override fun onTouch(touch: BlockHandler.Touch) {
 
-    }
+        val potion = touch.block.get<Potion>(PotionTrapGenerator.potionKey) ?: return
 
-    override fun update(instance: Instance, position: BlockPosition, blockData: Data?) {
-
-        val chunk = instance.getChunkAt(position)
-        val entities = instance.getChunkEntities(chunk)
-        val entityBoundingBoxes = entities
-            .filter { !it.isSneaking }
-            .filterIsInstance<LivingEntity>()
-            .filter { position == it.position.toBlockPosition().subtract(0, 1, 0) }
-
-        val potion = blockData!!.get<Potion>(PotionTrapGenerator.potionKey)!!
-
-        entityBoundingBoxes.forEach {
-
-            if (!it.activeEffects.any { activeEffect -> activeEffect.potion.effect == potion.effect }) {
-                (it as? Player)?.playSound(Sound.sound(SoundEvent.TRIPWIRE_CLICK_ON, Sound.Source.BLOCK, 1f, 1f))
-            } else {
-                (it as? Player)?.playSound(Sound.sound(SoundEvent.TRIPWIRE_CLICK_ON, Sound.Source.BLOCK, .3f, 1f))
-            }
-
-            it.addEffect(potion)
+        if (!touch.touching.activeEffects.any { activeEffect -> activeEffect.potion.effect == potion.effect }) {
+            (touch.touching as? Player)?.playSound(Sound.sound(SoundEvent.BLOCK_TRIPWIRE_CLICK_ON, Sound.Source.BLOCK, 1f, 1f))
+        } else {
+            (touch.touching as? Player)?.playSound(Sound.sound(SoundEvent.BLOCK_TRIPWIRE_CLICK_OFF, Sound.Source.BLOCK, .3f, 1f))
         }
     }
-
-    override fun getUpdateOption() = UpdateOption(10, TimeUnit.TICK)
 
 
 }

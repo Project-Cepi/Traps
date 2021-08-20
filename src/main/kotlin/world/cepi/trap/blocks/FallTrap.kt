@@ -5,21 +5,23 @@ import net.minestom.server.data.Data
 import net.minestom.server.entity.Player
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
+import net.minestom.server.instance.block.BlockHandler
 import net.minestom.server.instance.block.CustomBlock
 import net.minestom.server.sound.SoundEvent
 import net.minestom.server.utils.BlockPosition
+import net.minestom.server.utils.NamespaceID
 import net.minestom.server.utils.time.TimeUnit
 import net.minestom.server.utils.time.UpdateOption
 import world.cepi.trap.generator.FallTrapGenerator
 
-object FallTrap : CustomBlock(Block.MAGMA_BLOCK, "damage-block") {
+object FallTrap : BlockHandler {
 
-    override fun getCustomBlockId() = 102.toShort()
+    override fun getNamespaceId(): NamespaceID {
+        return NamespaceID.from("cepi:trap_fall")
+    }
 
-    override fun onInteract(player: Player, hand: Player.Hand, blockPosition: BlockPosition, data: Data?) = true
-
-    override fun onDestroy(instance: Instance, blockPosition: BlockPosition, data: Data?) {
-
+    override fun onPlace(placement: BlockHandler.Placement) {
+        placement.instance.setBlock(placement.blockPosition, placement.block.withTag())
     }
 
     override fun onPlace(instance: Instance, blockPosition: BlockPosition, data: Data?) {

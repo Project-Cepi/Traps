@@ -4,9 +4,8 @@ import kotlinx.serialization.Serializable
 import net.minestom.server.data.Data
 import net.minestom.server.entity.Player
 import net.minestom.server.instance.block.Block
-import net.minestom.server.registry.Registries
 import net.minestom.server.tag.Tag
-import world.cepi.kstom.item.clientData
+import world.cepi.kstom.item.set
 import world.cepi.kstom.item.item
 import world.cepi.kstom.item.withMeta
 
@@ -14,17 +13,16 @@ import world.cepi.kstom.item.withMeta
 sealed class TrapGenerator {
 
     abstract val defaultBlock: Block
-    abstract val blockId: Short
+    abstract val blockId: Int
 
-    fun giveBlock(player: Player) = player.inventory.addItemStack(item(Registries.getMaterial(defaultBlock.key())) {
+    fun giveBlock(player: Player) = player.inventory.addItemStack(item(defaultBlock.registry().material()!!) {
         withMeta {
 
             this.set(Tag.String("blockClass"), this@TrapGenerator::class.simpleName!!)
-            this.set(Tag.Short("material"), defaultBlock.blockId)
+            this.set(Tag.Integer("material"), defaultBlock.id())
 
-            clientData {
-                this["block"] = this@TrapGenerator
-            }
+            this["block"] = this@TrapGenerator
+
         }
     })
 

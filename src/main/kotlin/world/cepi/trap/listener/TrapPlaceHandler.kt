@@ -21,6 +21,7 @@ object TrapPlaceHandler {
 
         val trapGenerator = item.meta.get("block", trapGeneratorClass) ?: return
 
+        block = block.withHandler()
         blockStateId = item.meta.getTag(Tag.Short("material"))!!
 
         blockData = trapGenerator.generateData().also {

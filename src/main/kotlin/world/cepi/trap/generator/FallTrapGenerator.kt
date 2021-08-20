@@ -2,6 +2,7 @@ package world.cepi.trap.generator
 
 import kotlinx.serialization.Serializable
 import net.minestom.server.instance.block.Block
+import net.minestom.server.tag.Tag
 import world.cepi.kstom.command.arguments.generation.annotations.*
 import world.cepi.kstom.data.data
 
@@ -19,7 +20,7 @@ data class FallTrapGenerator(
     }
 
     companion object {
-        const val stageAmountKey = "stageAmount"
-        const val currentStageKey = "currentStage"
+        const val stageAmountKey = Tag.Integer("stageAmount")
+        val currentStageKey = Tag.Integer("currentStage")
     }
 }
