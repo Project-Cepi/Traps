@@ -24,10 +24,11 @@ object TrapCommand : Command("trap") {
             generatedSyntaxes.applySyntax(this, handle, trapName.literal(), lookCoordinate) { instance ->
 
                 val player = sender as? Player ?: return@applySyntax
+                val location = context[lookCoordinate].from(player)
 
                 player.instance!!.setBlock(
-                    context[lookCoordinate].from(player),
-                    instance.generateBlock(player.instance!!.getBlock(context[lookCoordinate].from(player)))
+                    location,
+                    instance.generateBlock(player.instance!!.getBlock(location)).withHandler(instance)
                 )
 
                 player.sendMessage("Trap set!")
