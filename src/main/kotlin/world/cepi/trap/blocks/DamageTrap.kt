@@ -17,7 +17,8 @@ object DamageTrap : BlockHandler {
     }
 
     override fun onTouch(touch: BlockHandler.Touch) {
-        (touch.touching as? LivingEntity)?.damage(DamageType.ON_FIRE, touch.block.getTag(DamageTrapGenerator.damageKey) ?: return)
+        (touch.touching as? LivingEntity)
+            ?.damage(DamageType.ON_FIRE, touch.block.getTag(DamageTrapGenerator.damageKey) ?: return)
     }
 
 

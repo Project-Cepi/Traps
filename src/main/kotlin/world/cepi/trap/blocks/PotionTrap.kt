@@ -1,5 +1,6 @@
 package world.cepi.trap.blocks
 
+import kotlinx.serialization.serializer
 import net.kyori.adventure.sound.Sound
 import net.minestom.server.entity.Player
 import net.minestom.server.instance.block.BlockHandler
@@ -7,6 +8,7 @@ import net.minestom.server.potion.Potion
 import net.minestom.server.sound.SoundEvent
 import net.minestom.server.utils.NamespaceID
 import world.cepi.kstom.item.get
+import world.cepi.kstom.serializer.PotionSerializer
 import world.cepi.trap.generator.PotionTrapGenerator
 
 object PotionTrap : BlockHandler {
@@ -16,10 +18,7 @@ object PotionTrap : BlockHandler {
     }
 
     override fun onTouch(touch: BlockHandler.Touch) {
-
-        println("h")
-
-        val potion = touch.block.get<Potion>(PotionTrapGenerator.potionKey) ?: return
+        val potion = touch.block.get(PotionTrapGenerator.potionKey, serializer = PotionSerializer) ?: return
 
         if (!touch.touching.activeEffects.none { activeEffect -> activeEffect.potion.effect == potion.effect }) {
             (touch.touching as? Player)
