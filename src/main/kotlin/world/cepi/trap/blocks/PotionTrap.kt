@@ -17,12 +17,14 @@ object PotionTrap : BlockHandler {
 
     override fun onTouch(touch: BlockHandler.Touch) {
 
+        println("h")
+
         val potion = touch.block.get<Potion>(PotionTrapGenerator.potionKey) ?: return
 
-        if (!touch.touching.activeEffects.any { activeEffect -> activeEffect.potion.effect == potion.effect }) {
-            (touch.touching as? Player)?.playSound(Sound.sound(SoundEvent.BLOCK_TRIPWIRE_CLICK_ON, Sound.Source.BLOCK, 1f, 1f))
-        } else {
-            (touch.touching as? Player)?.playSound(Sound.sound(SoundEvent.BLOCK_TRIPWIRE_CLICK_OFF, Sound.Source.BLOCK, .3f, 1f))
+        if (!touch.touching.activeEffects.none { activeEffect -> activeEffect.potion.effect == potion.effect }) {
+            (touch.touching as? Player)
+                ?.playSound(Sound.sound(SoundEvent.BLOCK_TRIPWIRE_CLICK_ON, Sound.Source.BLOCK, 1f, 1f))
+            touch.touching.addEffect(potion)
         }
     }
 

@@ -6,11 +6,12 @@ import net.minestom.server.item.Material
 import net.minestom.server.potion.Potion
 import net.minestom.server.potion.PotionEffect
 import world.cepi.kstom.command.arguments.generation.annotations.*
-import world.cepi.kstom.data.data
+import world.cepi.kstom.item.with
+import world.cepi.kstom.serializer.PotionSerializer
 
 @Serializable
 data class PotionTrapGenerator(
-    @param:DefaultPotionEffect(PotionEffect.CONFUSION)
+    @param:DefaultPotionEffect("nausea")
     val potionEffect: PotionEffect,
     @param:DefaultNumber(3.0)
     val amplifier: Byte = 3,
@@ -21,15 +22,14 @@ data class PotionTrapGenerator(
     @param:DefaultBoolean(true)
     val icon: Boolean = true,
     @param:DefaultBoolean(false)
-    val ambient: Boolean = false,
-    @param:DefaultBlock(Block.EMERALD_BLOCK)
-    override val defaultBlock: Block = Block.EMERALD_BLOCK
+    val ambient: Boolean = false
 ) : TrapGenerator() {
-    override val blockId = 103.toShort()
+    override fun generateBlock(block: Block) =
+        block.with("potion",
+            serializer = PotionSerializer,
+            item = Potion(potionEffect, amplifier, duration, particles, icon, ambient)
+        )
 
-    override fun generateData() = data {
-        this["potion"] = Potion(potionEffect, amplifier, duration, particles, icon, ambient)
-    }
 
     companion object {
         const val potionKey = "potion"

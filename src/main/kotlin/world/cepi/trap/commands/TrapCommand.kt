@@ -1,6 +1,7 @@
 package world.cepi.trap.commands
 
 import net.minestom.server.command.builder.Command
+import net.minestom.server.command.builder.arguments.ArgumentType
 import net.minestom.server.entity.Player
 import world.cepi.kstom.command.arguments.generation.generateSyntaxes
 import world.cepi.kstom.command.arguments.literal
@@ -11,7 +12,8 @@ object TrapCommand : Command("trap") {
 
     init {
 
-        val get = "get".literal()
+        val handle = "handle".literal()
+        val lookCoordinate = ArgumentType.RelativeBlockPosition("block")
 
         TrapGenerator.trapGenerators.forEach {
 
@@ -19,8 +21,16 @@ object TrapCommand : Command("trap") {
 
             val trapName = it.simpleName!!.dropLast("TrapGenerator".length)
 
-            generatedSyntaxes.applySyntax(this, get, trapName.literal()) { instance ->
-                instance.giveBlock(sender as Player)
+            generatedSyntaxes.applySyntax(this, handle, trapName.literal(), lookCoordinate) { instance ->
+
+                val player = sender as? Player ?: return@applySyntax
+
+                player.instance!!.setBlock(
+                    context[lookCoordinate].from(player),
+                    instance.generateBlock(player.instance!!.getBlock(context[lookCoordinate].from(player)))
+                )
+
+                player.sendMessage("Trap set!")
             }
         }
 

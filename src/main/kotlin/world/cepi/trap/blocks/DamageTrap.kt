@@ -4,7 +4,7 @@ import net.minestom.server.entity.LivingEntity
 import net.minestom.server.entity.damage.DamageType
 import net.minestom.server.instance.block.BlockHandler
 import net.minestom.server.utils.NamespaceID
-import world.cepi.kstom.item.get
+import world.cepi.trap.generator.DamageTrapGenerator
 
 object DamageTrap : BlockHandler {
 
@@ -13,7 +13,7 @@ object DamageTrap : BlockHandler {
     }
 
     override fun onTouch(touch: BlockHandler.Touch) {
-        (touch.touching as? LivingEntity)?.damage(DamageType.ON_FIRE, touch.block.get("damage") ?: return)
+        (touch.touching as? LivingEntity)?.damage(DamageType.ON_FIRE, touch.block.getTag(DamageTrapGenerator.damageKey) ?: return)
     }
 
 
