@@ -1,13 +1,16 @@
 package world.cepi.trap.generator
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import net.minestom.server.instance.block.Block
+import net.minestom.server.instance.block.BlockHandler
 import net.minestom.server.item.Material
 import net.minestom.server.potion.Potion
 import net.minestom.server.potion.PotionEffect
 import world.cepi.kstom.command.arguments.generation.annotations.*
 import world.cepi.kstom.item.with
 import world.cepi.kstom.serializer.PotionSerializer
+import world.cepi.trap.blocks.PotionTrap
 
 @Serializable
 data class PotionTrapGenerator(
@@ -30,6 +33,8 @@ data class PotionTrapGenerator(
             item = Potion(potionEffect, amplifier, duration, particles, icon, ambient)
         )
 
+    @Transient
+    override val handler = PotionTrap
 
     companion object {
         const val potionKey = "potion"

@@ -9,7 +9,7 @@ sealed class TrapGenerator {
     open fun generateBlock(block: Block): Block = block
 
     open val handler: BlockHandler
-        get() = Field
+        get() = throw IllegalStateException("GET for handler not implemented!")
 
     companion object {
         val trapGenerators = arrayOf(

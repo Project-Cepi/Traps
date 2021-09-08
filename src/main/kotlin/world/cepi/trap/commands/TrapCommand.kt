@@ -28,7 +28,7 @@ object TrapCommand : Command("trap") {
 
                 player.instance!!.setBlock(
                     location,
-                    instance.generateBlock(player.instance!!.getBlock(location)).withHandler(instance)
+                    instance.generateBlock(player.instance!!.getBlock(location)).withHandler(instance.handler)
                 )
 
                 player.sendMessage("Trap set!")
