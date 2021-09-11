@@ -19,7 +19,7 @@ object DamageTrap : SteppedTrap() {
     }
 
     override fun step(step: Step): Unit = with(step) {
-        (entitiy as? LivingEntity)
+        (entity as? LivingEntity)
             ?.damage(DamageType.ON_FIRE, block.getTag(DamageTrapGenerator.damageKey) ?: return)
     }
 

@@ -9,5 +9,5 @@ class Step(
     val block: Block,
     val instance: Instance,
     val blockPosition: Point,
-    val entitiy: Entity
+    val entity: Entity
 )

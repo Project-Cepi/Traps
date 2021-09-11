@@ -10,20 +10,22 @@ import net.minestom.server.utils.NamespaceID
 import world.cepi.kstom.item.get
 import world.cepi.kstom.serializer.PotionSerializer
 import world.cepi.trap.generator.PotionTrapGenerator
+import world.cepi.trap.util.Step
+import world.cepi.trap.util.SteppedTrap
 
-object PotionTrap : BlockHandler {
+object PotionTrap : SteppedTrap() {
 
     override fun getNamespaceId(): NamespaceID {
         return NamespaceID.from("cepi:trap_potion")
     }
 
-    override fun onTouch(touch: BlockHandler.Touch) {
-        val potion = touch.block.get(PotionTrapGenerator.potionKey, serializer = PotionSerializer) ?: return
+    override fun step(step: Step) = with(step) {
+        val potion = block.get(PotionTrapGenerator.potionKey, serializer = PotionSerializer) ?: return
 
-        if (!touch.touching.activeEffects.none { activeEffect -> activeEffect.potion.effect == potion.effect }) {
-            (touch.touching as? Player)
+        if (!entity.activeEffects.none { activeEffect -> activeEffect.potion.effect == potion.effect }) {
+            (entity as? Player)
                 ?.playSound(Sound.sound(SoundEvent.BLOCK_TRIPWIRE_CLICK_ON, Sound.Source.BLOCK, 1f, 1f))
-            touch.touching.addEffect(potion)
+            entity.addEffect(potion)
         }
     }
 
