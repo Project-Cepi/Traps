@@ -6,9 +6,11 @@ import net.minestom.server.entity.damage.DamageType
 import net.minestom.server.instance.block.BlockHandler
 import net.minestom.server.utils.NamespaceID
 import world.cepi.trap.generator.DamageTrapGenerator
+import world.cepi.trap.util.Step
+import world.cepi.trap.util.SteppedTrap
 import java.util.*
 
-object DamageTrap : BlockHandler {
+object DamageTrap : SteppedTrap() {
 
     val playerTimingMap = WeakHashMap<Player, Long>()
 
@@ -16,9 +18,9 @@ object DamageTrap : BlockHandler {
         return NamespaceID.from("cepi:trap_damage")
     }
 
-    override fun onTouch(touch: BlockHandler.Touch) {
-        (touch.touching as? LivingEntity)
-            ?.damage(DamageType.ON_FIRE, touch.block.getTag(DamageTrapGenerator.damageKey) ?: return)
+    override fun step(step: Step): Unit = with(step) {
+        (entitiy as? LivingEntity)
+            ?.damage(DamageType.ON_FIRE, block.getTag(DamageTrapGenerator.damageKey) ?: return)
     }
 
 
