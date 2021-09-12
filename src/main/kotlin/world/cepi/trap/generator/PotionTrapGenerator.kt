@@ -18,8 +18,8 @@ data class PotionTrapGenerator(
     val potionEffect: PotionEffect,
     @param:DefaultNumber(3.0)
     val amplifier: Byte = 3,
-    @param:DefaultNumber(60.0)
-    val duration: Int = 60,
+    @param:DefaultNumber(3.0)
+    val duration: Double = 3.0,
     @param:DefaultBoolean(true)
     val particles: Boolean = true,
     @param:DefaultBoolean(true)
@@ -30,7 +30,7 @@ data class PotionTrapGenerator(
     override fun generateBlock(block: Block) =
         block.with("potion",
             serializer = PotionSerializer,
-            item = Potion(potionEffect, amplifier, duration, particles, icon, ambient)
+            item = Potion(potionEffect, amplifier, (duration * 20).toInt(), particles, icon, ambient)
         )
 
     @Transient

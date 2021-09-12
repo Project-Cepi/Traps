@@ -22,7 +22,7 @@ object PotionTrap : SteppedTrap() {
     override fun step(step: Step) = with(step) {
         val potion = block.get(PotionTrapGenerator.potionKey, serializer = PotionSerializer) ?: return
 
-        if (!entity.activeEffects.none { activeEffect -> activeEffect.potion.effect == potion.effect }) {
+        if (entity.activeEffects.none { activeEffect -> activeEffect.potion.effect == potion.effect }) {
             (entity as? Player)
                 ?.playSound(Sound.sound(SoundEvent.BLOCK_TRIPWIRE_CLICK_ON, Sound.Source.BLOCK, 1f, 1f))
             entity.addEffect(potion)
