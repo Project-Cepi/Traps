@@ -1,10 +1,7 @@
 package world.cepi.trap.blocks
 
-import kotlinx.serialization.serializer
 import net.kyori.adventure.sound.Sound
 import net.minestom.server.entity.Player
-import net.minestom.server.instance.block.BlockHandler
-import net.minestom.server.potion.Potion
 import net.minestom.server.sound.SoundEvent
 import net.minestom.server.utils.NamespaceID
 import world.cepi.kstom.item.get

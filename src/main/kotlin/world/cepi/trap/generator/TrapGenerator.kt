@@ -15,6 +15,7 @@ sealed class TrapGenerator {
         val trapGenerators = arrayOf(
             DamageTrapGenerator::class,
             FallTrapGenerator::class,
+            VelocityTrapGenerator::class,
             PotionTrapGenerator::class
         )
     }

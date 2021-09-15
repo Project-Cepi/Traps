@@ -11,12 +11,9 @@ import world.cepi.trap.util.SteppedTrap
 import java.util.*
 
 object DamageTrap : SteppedTrap() {
+    override fun getNamespaceId(): NamespaceID =
+        NamespaceID.from("cepi:trap_damage")
 
-    val playerTimingMap = WeakHashMap<Player, Long>()
-
-    override fun getNamespaceId(): NamespaceID {
-        return NamespaceID.from("cepi:trap_damage")
-    }
 
     override fun step(step: Step): Unit = with(step) {
         (entity as? LivingEntity)
