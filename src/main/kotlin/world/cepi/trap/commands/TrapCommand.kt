@@ -1,40 +1,34 @@
 package world.cepi.trap.commands
 
-import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.arguments.ArgumentType
 import net.minestom.server.entity.Player
+import world.cepi.kstom.command.arguments.delegate
 import world.cepi.kstom.command.arguments.generation.generateSyntaxes
 import world.cepi.kstom.command.arguments.literal
+import world.cepi.kstom.command.kommand.Kommand
 import world.cepi.trap.generator.TrapGenerator
-import kotlin.reflect.full.allSuperclasses
 
-object TrapCommand : Command("trap") {
+object TrapCommand : Kommand({
+    val handle by literal
+    val lookCoordinate by ArgumentType::RelativeBlockPosition.delegate()
 
-    init {
+    TrapGenerator.trapGenerators.forEach {
 
-        val handle = "handle".literal()
-        val lookCoordinate = ArgumentType.RelativeBlockPosition("block")
+        val generatedSyntaxes = generateSyntaxes(it)
 
-        TrapGenerator.trapGenerators.forEach {
+        val trapName = it.simpleName!!.dropLast("TrapGenerator".length)
 
-            val generatedSyntaxes = generateSyntaxes(it)
+        generatedSyntaxes.applySyntax(this, handle, trapName.literal(), lookCoordinate) { instance ->
 
-            val trapName = it.simpleName!!.dropLast("TrapGenerator".length)
+            val player = sender as? Player ?: return@applySyntax
+            val location = context[lookCoordinate].from(player)
 
-            generatedSyntaxes.applySyntax(this, handle, trapName.literal(), lookCoordinate) { instance ->
+            player.instance!!.setBlock(
+                location,
+                instance.generateBlock(player.instance!!.getBlock(location)).withHandler(instance.handler)
+            )
 
-                val player = sender as? Player ?: return@applySyntax
-                val location = context[lookCoordinate].from(player)
-
-                player.instance!!.setBlock(
-                    location,
-                    instance.generateBlock(player.instance!!.getBlock(location)).withHandler(instance.handler)
-                )
-
-                player.sendMessage("Trap set!")
-            }
+            player.sendMessage("Trap set!")
         }
-
     }
-
-}
+}, "trap", "traps")
