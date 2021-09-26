@@ -1,11 +1,14 @@
 package world.cepi.trap.commands
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.minestom.server.command.builder.arguments.ArgumentType
 import net.minestom.server.entity.Player
 import world.cepi.kepi.command.subcommand.applyHelp
+import world.cepi.kepi.messages.sendFormattedMessage
 import world.cepi.kepi.messages.sendFormattedTranslatableMessage
+import world.cepi.kepi.messages.translations.formatTranslableMessage
 import world.cepi.kstom.command.arguments.delegate
 import world.cepi.kstom.command.arguments.generation.generateSyntaxes
 import world.cepi.kstom.command.arguments.literal
@@ -32,8 +35,10 @@ object TrapCommand : Kommand({
                 instance.generateBlock(player.instance!!.getBlock(location)).withHandler(instance.handler)
             )
 
-            player.sendFormattedTranslatableMessage("trap", "set",
-                Component.text(trapName, NamedTextColor.BLUE)
+            player.sendFormattedMessage(
+                player.formatTranslableMessage("trap", "set",
+                    Component.text(trapName, NamedTextColor.BLUE)
+                ).clickEvent(ClickEvent.suggestCommand("/tp ${location.x()} ${location.y()} ${location.z()}"))
             )
         }
     }
