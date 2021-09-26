@@ -3,11 +3,13 @@ package world.cepi.trap.blocks
 import net.kyori.adventure.sound.Sound
 import net.minestom.server.entity.Player
 import net.minestom.server.sound.SoundEvent
+import net.minestom.server.tag.Tag
 import net.minestom.server.utils.NamespaceID
 import world.cepi.kstom.item.get
 import world.cepi.kstom.serializer.VectorSerializer
 import world.cepi.trap.util.Step
 import world.cepi.trap.util.SteppedTrap
+import world.cepi.trap.util.VelocityTrapType
 
 object VelocityTrap : SteppedTrap() {
 
@@ -16,12 +18,13 @@ object VelocityTrap : SteppedTrap() {
     override fun step(step: Step): Unit = with(step) {
         block.get("velocity", serializer = VectorSerializer)?.let {
 
-            val isFixed = block.get<Boolean>("fixed")!!
+            val trapType = VelocityTrapType.values()[block.getTag(Tag.Integer("fixed"))!!]
 
-            if (isFixed) {
-                entity.velocity = it
-            } else {
-                entity.velocity = entity.velocity.add(entity.position.direction().normalize().mul(it))
+            entity.velocity = when (trapType) {
+                VelocityTrapType.DIRECTIONAL ->
+                   entity.velocity.add(entity.position.direction().normalize().mul(it))
+                VelocityTrapType.FORCE_FIXED -> it
+                VelocityTrapType.FIXED -> entity.velocity.add(it)
             }
 
             (entity as? Player)?.playSound(
