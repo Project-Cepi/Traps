@@ -15,7 +15,14 @@ object VelocityTrap : SteppedTrap() {
 
     override fun step(step: Step): Unit = with(step) {
         block.get("velocity", serializer = VectorSerializer)?.let {
-            entity.velocity = entity.velocity.add(entity.position.direction().normalize().mul(it))
+
+            val isFixed = block.get<Boolean>("fixed")!!
+
+            if (isFixed) {
+                entity.velocity = it
+            } else {
+                entity.velocity = entity.velocity.add(entity.position.direction().normalize().mul(it))
+            }
 
             (entity as? Player)?.playSound(
                 Sound.sound(

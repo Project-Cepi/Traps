@@ -38,9 +38,9 @@ object TrapCommand : Kommand({
             Traps are a way to make blocks emit special properties whenever an action happens to it.
             
             Usage:
-            /trap handle (trapName) (trapCoordinates) (...trapProperties)
+            <yellow>/trap handle (trapName) (trapCoordinates) (...trapProperties)
             
-            TIP:
+            <blue>TIP:
             trapCoordinates automatically autocompletes to the block you are looking at.
         """.trimIndent()
     }
