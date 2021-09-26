@@ -19,7 +19,7 @@ object VelocityTrap : SteppedTrap() {
 
             (entity as? Player)?.playSound(
                 Sound.sound(
-                    SoundEvent.ENTITY_WITHER_SHOOT,
+                    SoundEvent.UI_LOOM_TAKE_RESULT,
                     Sound.Source.MASTER,
                     1f,
                     2f
