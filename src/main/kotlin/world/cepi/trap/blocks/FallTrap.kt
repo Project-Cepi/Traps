@@ -6,59 +6,53 @@ import net.minestom.server.entity.Player
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockHandler
+import net.minestom.server.network.packet.server.play.BlockBreakAnimationPacket
 import net.minestom.server.sound.SoundEvent
 import net.minestom.server.utils.NamespaceID
 import net.minestom.server.utils.time.TimeUnit
 import world.cepi.trap.generator.FallTrapGenerator
+import world.cepi.trap.util.Step
+import world.cepi.trap.util.SteppedTrap
+import kotlin.random.Random
 
-object FallTrap : BlockHandler {
+object FallTrap : SteppedTrap() {
 
     override fun getNamespaceId(): NamespaceID {
         return NamespaceID.from("cepi:trap_fall")
     }
-//
-//    override fun onPlace(placement: BlockHandler.Placement) {
-//        placement.instance.setBlock(placement.blockPosition, placement.block.withTag())
-//    }
 
-//    override fun onPlace(instance: Instance, blockPosition: BlockPosition, data: Data?) {
-//        data!!.set(
-//            FallTrapGenerator.currentStageKey,
-//            data.get<Int>(FallTrapGenerator.stageAmountKey)
-//        )
-//    }
-//
-//    override fun update(instance: Instance, position: BlockPosition, blockData: Data?) {
-//
-//        val currentStage = blockData!!.get<Int>(FallTrapGenerator.currentStageKey)
-//
-//        val chunk = instance.getChunkAt(position)
-//
-//        if (chunk!!.instance.getBlockStateId(position) == Block.AIR.blockId) {
-//            chunk.instance.refreshBlockStateId(position, blockData.get<Short>("material")!!)
-//        }
-//
-//        if (currentStage == 0) {
-//            blockData.set(FallTrapGenerator.currentStageKey, blockData.get<Int>(FallTrapGenerator.stageAmountKey))
-//            chunk.instance.refreshBlockStateId(position, Block.AIR.blockId)
-//            return
-//        }
-//
-//        val entities = instance.getChunkEntities(chunk)
-//        val anyPlayerOnBlock = entities
-//            .filterIsInstance<Player>()
-//            .filter { position == it.position.toBlockPosition().subtract(0, 1, 0) }
-//
-//        if (anyPlayerOnBlock.isEmpty()) return
-//
-//        blockData.set(FallTrapGenerator.currentStageKey, blockData.get<Int>(FallTrapGenerator.currentStageKey)!! - 1)
-//
-//        anyPlayerOnBlock.forEach {
-//            it.playSound(Sound.sound(SoundEvent.STONE_BREAK, Sound.Source.BLOCK, 1f, 1f))
-//        }
-//    }
-//
-//    override fun getUpdateOption() = UpdateOption(10, TimeUnit.TICK)
+    override fun step(step: Step) {
+
+        if (step.block.hasTag(FallTrapGenerator.currentTick)) return
+
+        step.instance.setBlock(
+            step.blockPosition,
+            step.block
+                .withTag(FallTrapGenerator.currentTick, 0)
+        )
+
+    }
+
+    override fun tick(tick: BlockHandler.Tick) {
+
+        if (!tick.block.hasTag(FallTrapGenerator.currentTick)) return
+
+        val currentTick = tick.block.getTag(FallTrapGenerator.currentTick)!!
+        val ticksPerStage = tick.block.getTag(FallTrapGenerator.ticksPerStage)!!
+
+        if (ticksPerStage * 10 == currentTick) {
+            tick.instance.setBlock(tick.blockPosition, Block.AIR)
+        } else {
+            tick.instance.setBlock(
+                tick.blockPosition,
+                tick.block.withTag(FallTrapGenerator.currentTick, currentTick + 1L)
+            )
+
+            tick.instance.getChunkAt(tick.blockPosition)?.sendPacketToViewers(
+                BlockBreakAnimationPacket(Random.nextInt(0, 100000), tick.blockPosition, 1)
+            )
+        }
+    }
 
 
 }
