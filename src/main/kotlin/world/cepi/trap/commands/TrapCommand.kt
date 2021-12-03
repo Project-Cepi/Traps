@@ -37,4 +37,6 @@ object TrapCommand : Kommand({
         """.trimIndent()
     }
 
+    addSubcommands(ApplyTrapSubcommand)
+
 }, "trap", "traps")
