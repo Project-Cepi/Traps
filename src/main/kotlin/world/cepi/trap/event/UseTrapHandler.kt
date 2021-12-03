@@ -11,14 +11,14 @@ import world.cepi.trap.generator.trapGenerator
 object UseTrapHandler {
 
     fun used(event: PlayerBlockInteractEvent) = with(event) {
-        player.itemInMainHand.trapGenerator?.handler?.let {
-            block.withHandler(it)
+        player.itemInMainHand.trapGenerator?.let {
+            player.instance!!.setBlock(blockPosition, it.generateBlock(block).withHandler(it.handler))
             player.sendActionBar(Component.text("Trap set!", TrapExtension.trapColor))
             player.playSound(Sound.sound(
-                SoundEvent.BLOCK_NOTE_BLOCK_PLING,
+                SoundEvent.BLOCK_TRIPWIRE_CLICK_ON,
                 Sound.Source.MASTER,
-                1f,
-                2f
+                0.5f,
+                1.1f
             ), player.position)
         }
     }

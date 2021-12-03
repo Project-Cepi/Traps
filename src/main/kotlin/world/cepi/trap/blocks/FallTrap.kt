@@ -1,15 +1,9 @@
 package world.cepi.trap.blocks
 
-import net.kyori.adventure.sound.Sound
-import net.minestom.server.data.Data
-import net.minestom.server.entity.Player
-import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockHandler
 import net.minestom.server.network.packet.server.play.BlockBreakAnimationPacket
-import net.minestom.server.sound.SoundEvent
 import net.minestom.server.utils.NamespaceID
-import net.minestom.server.utils.time.TimeUnit
 import world.cepi.trap.generator.FallTrapGenerator
 import world.cepi.trap.util.Step
 import world.cepi.trap.util.SteppedTrap
