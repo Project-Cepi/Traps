@@ -30,7 +30,7 @@ data class PotionTrapGenerator(
     override fun generateBlock(block: Block) =
         block.with("potion",
             serializer = PotionSerializer,
-            item = Potion(potionEffect, amplifier, (duration * 20).toInt(), particles, icon, ambient)
+            item = Potion(potionEffect, amplifier, (duration * 20).toInt(), 0x00) // TODO account for particles, icon, and ambient flags
         )
 
     @Transient

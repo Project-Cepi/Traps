@@ -23,11 +23,11 @@ data class FallTrapGenerator(
     override val handler = FallTrap
 
     override fun generateBlock(block: Block) =
-        block.withTag(ticksPerStage, length.toMillis() / MinecraftServer.TICK_MS / 10)
+        block.withTag(ticks, length.toMillis() / MinecraftServer.TICK_MS)
 
 
     companion object {
-        val ticksPerStage = Tag.Long("ticksPerStage")
+        val ticks = Tag.Long("ticks")
         val currentTick = Tag.Long("currentTick")
     }
 }

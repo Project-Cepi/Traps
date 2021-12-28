@@ -5,6 +5,8 @@ import net.minestom.server.extensions.Extension
 import world.cepi.kstom.command.register
 import world.cepi.kstom.command.unregister
 import world.cepi.kstom.event.listenOnly
+import world.cepi.kstom.util.log
+import world.cepi.kstom.util.node
 import world.cepi.trap.commands.TrapCommand
 import world.cepi.trap.event.UseTrapHandler
 import world.cepi.trap.generator.TrapGenerator
@@ -15,22 +17,24 @@ class TrapExtension : Extension() {
         val trapColor = TextColor.color(150, 67, 198)
     }
 
-    override fun initialize() {
+    override fun initialize(): LoadStatus {
 
         TrapCommand.register()
 
-        eventNode.listenOnly(UseTrapHandler::used)
+        node.listenOnly(UseTrapHandler::used)
 
         val trapAmount = TrapGenerator.trapGenerators.size
 
-        logger.info("[TrapExtension] has been enabled - $trapAmount trap${if (trapAmount == 1) "" else "s"} loaded!")
+        log.info("[TrapExtension] has been enabled - $trapAmount trap${if (trapAmount == 1) "" else "s"} loaded!")
+
+        return LoadStatus.SUCCESS
     }
 
     override fun terminate() {
 
         TrapCommand.unregister()
 
-        logger.info("[TrapExtension] has been disabled!")
+        log.info("[TrapExtension] has been disabled!")
     }
 
 }

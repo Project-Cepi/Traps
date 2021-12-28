@@ -7,6 +7,7 @@ import net.minestom.server.utils.NamespaceID
 import world.cepi.trap.generator.FallTrapGenerator
 import world.cepi.trap.util.Step
 import world.cepi.trap.util.SteppedTrap
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 object FallTrap : SteppedTrap() {
@@ -32,9 +33,9 @@ object FallTrap : SteppedTrap() {
         if (!tick.block.hasTag(FallTrapGenerator.currentTick)) return
 
         val currentTick = tick.block.getTag(FallTrapGenerator.currentTick)!!
-        val ticksPerStage = tick.block.getTag(FallTrapGenerator.ticksPerStage)!!
+        val ticks = tick.block.getTag(FallTrapGenerator.ticks)!!
 
-        if (ticksPerStage * 10 == currentTick) {
+        if (ticks == currentTick) {
             tick.instance.setBlock(tick.blockPosition, Block.AIR)
         } else {
             tick.instance.setBlock(
@@ -43,7 +44,9 @@ object FallTrap : SteppedTrap() {
             )
 
             tick.instance.getChunkAt(tick.blockPosition)?.sendPacketToViewers(
-                BlockBreakAnimationPacket(Random.nextInt(0, 100000), tick.blockPosition, 1)
+                BlockBreakAnimationPacket(Random.nextInt(0, 100000), tick.blockPosition,
+                    ((10 * currentTick) / (ticks)).toDouble().roundToInt().toByte()
+                )
             )
         }
     }
