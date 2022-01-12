@@ -28,7 +28,7 @@ object FallTrap : SteppedTrap() {
 
     }
 
-    override fun tick(tick: BlockHandler.Tick) {
+    override fun tickStep(tick: BlockHandler.Tick) {
 
         if (!tick.block.hasTag(FallTrapGenerator.currentTick)) return
 
