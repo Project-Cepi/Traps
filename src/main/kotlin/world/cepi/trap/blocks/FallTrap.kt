@@ -18,6 +18,8 @@ object FallTrap : SteppedTrap() {
 
     override fun step(step: Step) {
 
+        if (step.block.isAir) return
+
         if (step.block.hasTag(FallTrapGenerator.currentTick)) return
 
         step.instance.setBlock(
@@ -36,7 +38,11 @@ object FallTrap : SteppedTrap() {
         val ticks = tick.block.getTag(FallTrapGenerator.ticks)!!
 
         if (ticks == currentTick) {
-            tick.instance.setBlock(tick.blockPosition, Block.AIR)
+            tick.instance.setBlock(
+                tick.blockPosition,
+                Block.AIR.withHandler(this)
+                    .withTag(FallTrapGenerator.currentTick, 0)
+            )
         } else {
             tick.instance.setBlock(
                 tick.blockPosition,
