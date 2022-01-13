@@ -40,7 +40,7 @@ dependencies {
     compileOnly("com.github.Minestom:Minestom:4ee5cbe424")
 
     // Add KStom
-    compileOnly("com.github.Project-Cepi:KStom:b30449df1c")
+    compileOnly("com.github.Project-Cepi:KStom:b0de24cb16")
 
     // Add Kepi
     compileOnly("com.github.Project-Cepi:Kepi:de037535d0")

@@ -3,6 +3,7 @@ package world.cepi.trap.commands
 import net.minestom.server.entity.Player
 import world.cepi.kepi.command.subcommand.applyHelp
 import world.cepi.kepi.item.AddCreationalItem
+import world.cepi.kstom.command.arguments.generation.ClassArgumentGenerator
 import world.cepi.kstom.command.arguments.generation.argumentsFromClass
 import world.cepi.kstom.command.arguments.generation.generateSyntaxes
 import world.cepi.kstom.command.arguments.literal
@@ -14,7 +15,7 @@ object TrapCommand : Kommand({
 
     TrapGenerator.trapGenerators.forEach {
 
-        val generatedSyntaxes = argumentsFromClass(it)
+        val generatedSyntaxes = ClassArgumentGenerator(it)
 
         val trapName = it.simpleName!!.dropLast("TrapGenerator".length)
 

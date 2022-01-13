@@ -8,9 +8,11 @@ import net.minestom.server.instance.block.BlockHandler
 import net.minestom.server.tag.Tag
 import net.minestom.server.utils.time.TimeUnit
 import world.cepi.kstom.command.arguments.generation.annotations.*
+import world.cepi.kstom.nbt.TagBlock
 import world.cepi.kstom.serializer.DurationSerializer
 import world.cepi.trap.blocks.FallTrap
 import java.time.Duration
+import kotlin.random.Random
 
 @Serializable
 data class FallTrapGenerator(
@@ -23,11 +25,16 @@ data class FallTrapGenerator(
     override val handler = FallTrap
 
     override fun generateBlock(block: Block) =
-        block.withTag(ticks, length.toMillis() / MinecraftServer.TICK_MS)
+        block
+            .withTag(ticks, length.toMillis() / MinecraftServer.TICK_MS)
+            .withTag(FallTrapGenerator.block, block)
+            .withTag(entityID, Random.nextInt(0, Int.MAX_VALUE))
 
 
     companion object {
         val ticks = Tag.Long("ticks")
         val currentTick = Tag.Long("currentTick")
+        val block = TagBlock("block")
+        val entityID = Tag.Integer("entityID")
     }
 }

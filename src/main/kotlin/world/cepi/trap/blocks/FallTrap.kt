@@ -8,7 +8,6 @@ import world.cepi.trap.generator.FallTrapGenerator
 import world.cepi.trap.util.Step
 import world.cepi.trap.util.SteppedTrap
 import kotlin.math.roundToInt
-import kotlin.random.Random
 
 object FallTrap : SteppedTrap() {
 
@@ -38,19 +37,39 @@ object FallTrap : SteppedTrap() {
         val ticks = tick.block.getTag(FallTrapGenerator.ticks)!!
 
         if (ticks == currentTick) {
-            tick.instance.setBlock(
-                tick.blockPosition,
-                Block.AIR.withHandler(this)
-                    .withTag(FallTrapGenerator.currentTick, 0)
-            )
+            if (tick.block.isAir) {
+                tick.instance.setBlock(
+                    tick.blockPosition,
+                    tick.block.getTag(FallTrapGenerator.block)!!.withHandler(this)
+                        .withTag(FallTrapGenerator.ticks, ticks)
+                        .withTag(FallTrapGenerator.block, tick.block)
+                        .withTag(FallTrapGenerator.entityID, tick.block.getTag(FallTrapGenerator.entityID)!!)
+                )
+            } else {
+                tick.instance.setBlock(
+                    tick.blockPosition,
+                    Block.AIR.withHandler(this)
+                        .withTag(FallTrapGenerator.currentTick, 0)
+                        .withTag(FallTrapGenerator.ticks, ticks)
+                        .withTag(FallTrapGenerator.block, tick.block)
+                        .withTag(FallTrapGenerator.entityID, tick.block.getTag(FallTrapGenerator.entityID)!!)
+                )
+
+                tick.instance.getChunkAt(tick.blockPosition)?.sendPacketToViewers(
+                    BlockBreakAnimationPacket(tick.block.getTag(FallTrapGenerator.entityID)!!, tick.blockPosition,0)
+                )
+            }
         } else {
+
             tick.instance.setBlock(
                 tick.blockPosition,
                 tick.block.withTag(FallTrapGenerator.currentTick, currentTick + 1L)
             )
 
+            if (tick.block.isAir) return
+
             tick.instance.getChunkAt(tick.blockPosition)?.sendPacketToViewers(
-                BlockBreakAnimationPacket(Random.nextInt(0, 100000), tick.blockPosition,
+                BlockBreakAnimationPacket(tick.block.getTag(FallTrapGenerator.entityID)!!, tick.blockPosition,
                     ((10 * currentTick) / (ticks)).toDouble().roundToInt().toByte()
                 )
             )
