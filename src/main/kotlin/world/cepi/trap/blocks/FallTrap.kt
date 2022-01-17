@@ -56,7 +56,8 @@ object FallTrap : SteppedTrap() {
                 )
 
                 tick.instance.getChunkAt(tick.blockPosition)?.sendPacketToViewers(
-                    BlockBreakAnimationPacket(tick.block.getTag(FallTrapGenerator.entityID)!!, tick.blockPosition,0)
+                    // The reason why we use an invalid value (such as 100) is that it removes the block break effect.
+                    BlockBreakAnimationPacket(tick.block.getTag(FallTrapGenerator.entityID)!!, tick.blockPosition,100)
                 )
             }
         } else {
