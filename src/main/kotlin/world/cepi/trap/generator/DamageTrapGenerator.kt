@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
 import net.minestom.server.instance.block.Block
 import net.minestom.server.tag.Tag
 import world.cepi.kstom.command.arguments.generation.annotations.*
@@ -23,7 +24,7 @@ data class DamageTrapGenerator(
 
     override fun generateLore() = listOf(
         Component.empty(),
-        Component.text("Damage: ", NamedTextColor.GRAY)
+        Component.text("Damage: ", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
             .append(Component.text(damage, NamedTextColor.WHITE))
     )
 

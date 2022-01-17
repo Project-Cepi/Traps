@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
 import net.minestom.server.MinecraftServer
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockHandler
@@ -35,8 +36,8 @@ data class FallTrapGenerator(
 
     override fun generateLore() = listOf(
         Component.empty(),
-        Component.text("Break Time: ", NamedTextColor.GRAY)
-            .append(Component.text(length.toMillis() / MinecraftServer.TICK_MS, NamedTextColor.WHITE))
+        Component.text("Break Time: ", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+            .append(Component.text((length.toMillis() / MinecraftServer.TICK_MS).toString() + "t", NamedTextColor.WHITE))
     )
 
     companion object {

@@ -53,6 +53,10 @@ sealed class TrapGenerator {
                 .append(Component.text(" (Right Click to Apply)", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, true))
         )
 
+        lore(
+            generateLore()
+        )
+
         this["trap", module] = this@TrapGenerator
     }
 
