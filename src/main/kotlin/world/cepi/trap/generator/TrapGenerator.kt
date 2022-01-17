@@ -29,7 +29,8 @@ sealed class TrapGenerator {
             DamageTrapGenerator::class,
             FallTrapGenerator::class,
             VelocityTrapGenerator::class,
-            PotionTrapGenerator::class
+            PotionTrapGenerator::class,
+            ShopTrapGenerator::class
         )
 
         val module = SerializersModule {
@@ -38,6 +39,7 @@ sealed class TrapGenerator {
                 subclass(FallTrapGenerator::class)
                 subclass(VelocityTrapGenerator::class)
                 subclass(PotionTrapGenerator::class)
+                subclass(ShopTrapGenerator::class)
             }
         }
     }
@@ -45,13 +47,16 @@ sealed class TrapGenerator {
     fun generateItem() = item(Material.PURPLE_DYE) {
         displayName(
             Component.text(
-                this@TrapGenerator::class.simpleName!!.dropLast("TrapGenerator".length) + " Trap Generator",
+                this@TrapGenerator::class.simpleName!!.dropLast("TrapGenerator".length) + " Trap",
                 TrapExtension.trapColor
             ).decoration(TextDecoration.ITALIC, false)
+                .append(Component.text(" (Right Click to Apply)", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, true))
         )
 
         this["trap", module] = this@TrapGenerator
     }
+
+    open fun generateLore(): List<Component> = listOf()
 
 }
 

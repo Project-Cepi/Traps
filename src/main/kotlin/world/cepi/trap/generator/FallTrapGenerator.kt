@@ -2,6 +2,8 @@ package world.cepi.trap.generator
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import net.minestom.server.MinecraftServer
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockHandler
@@ -30,6 +32,12 @@ data class FallTrapGenerator(
             .withTag(FallTrapGenerator.block, block)
             .withTag(entityID, Random.nextInt(0, Int.MAX_VALUE))
 
+
+    override fun generateLore() = listOf(
+        Component.empty(),
+        Component.text("Break Time: ", NamedTextColor.GRAY)
+            .append(Component.text(length.toMillis() / MinecraftServer.TICK_MS, NamedTextColor.WHITE))
+    )
 
     companion object {
         val ticks = Tag.Long("ticks")

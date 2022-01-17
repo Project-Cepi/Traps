@@ -17,7 +17,7 @@ import world.cepi.trap.util.VelocityTrapType
 data class VelocityTrapGenerator(
     @Serializable(with = VectorSerializer::class)
     val vector: Vec,
-    @EnumArgument("DIRECTIONAL", flattenType = ArgumentEnum.Format.LOWER_CASED)
+    @EnumArgument("FORCE_FIXED", flattenType = ArgumentEnum.Format.LOWER_CASED)
     val trapType: VelocityTrapType
 ) : TrapGenerator() {
 
