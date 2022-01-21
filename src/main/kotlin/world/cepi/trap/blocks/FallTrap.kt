@@ -43,12 +43,12 @@ object FallTrap : SteppedTrap() {
             tick.instance.setBlock(
                 tick.blockPosition,
                 tick.block.getTag(FallTrapGenerator.block)!!.withHandler(this)
-                    .withTag(FallTrapGenerator.currentTick, 0)
                     .withTag(FallTrapGenerator.ticks, ticks)
                     .withTag(FallTrapGenerator.regeneration, regeneration)
                     .withTag(FallTrapGenerator.block, tick.block)
                     .withTag(FallTrapGenerator.entityID, tick.block.getTag(FallTrapGenerator.entityID)!!)
             )
+            return
         }
 
         if (ticks == currentTick) {
