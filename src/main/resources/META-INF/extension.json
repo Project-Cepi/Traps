@@ -5,7 +5,8 @@
   "dependencies": [
     "KStom",
     "Kepi",
-    "ItemExtension"
+    "ItemExtension",
+    "Highlight"
   ],
   "meta": {
     "downloadURL": "https://github.com/Project-Cepi/Traps/releases/download/latest/Traps-1.0.0-all.jar"

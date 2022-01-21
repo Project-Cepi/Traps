@@ -45,6 +45,9 @@ dependencies {
     // Add Kepi
     compileOnly("com.github.Project-Cepi:Kepi:de037535d0")
 
+    // Add Highlight
+    compileOnly("com.github.Project-Cepi:Highlight:dbbd6bd01f")
+
     // Add ItemExtension
     compileOnly("com.github.Project-Cepi:ItemExtension:3046fa2a03")
 
