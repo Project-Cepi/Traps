@@ -21,7 +21,10 @@ import kotlin.random.Random
 data class FallTrapGenerator(
     @param:DefaultTickDuration(20)
     @Serializable(with = DurationSerializer::class)
-    val length: Duration = Duration.of(20, TimeUnit.SERVER_TICK)
+    val length: Duration = Duration.of(20, TimeUnit.SERVER_TICK),
+    @param:DefaultTickDuration(20)
+    @Serializable(with = DurationSerializer::class)
+    val regeneration: Duration = Duration.of(20, TimeUnit.SERVER_TICK),
 ) : TrapGenerator() {
 
     @Transient
@@ -30,6 +33,7 @@ data class FallTrapGenerator(
     override fun generateBlock(block: Block) =
         block
             .withTag(ticks, length.toMillis() / MinecraftServer.TICK_MS)
+            .withTag(Companion.regeneration, regeneration.toMillis() / MinecraftServer.TICK_MS)
             .withTag(FallTrapGenerator.block, block)
             .withTag(entityID, Random.nextInt(0, Int.MAX_VALUE))
 
@@ -37,11 +41,13 @@ data class FallTrapGenerator(
     override fun generateLore() = listOf(
         Component.empty(),
         Component.text("Break Time: ", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-            .append(Component.text((length.toMillis() / MinecraftServer.TICK_MS).toString() + "t", NamedTextColor.WHITE))
+            .append(Component.text((length.toMillis() / MinecraftServer.TICK_MS).toString() + "t ", NamedTextColor.WHITE))
+            .append(Component.text("(" + ((length.toMillis() / MinecraftServer.TICK_MS) / MinecraftServer.TICK_PER_SECOND).toString() + "s)", NamedTextColor.GRAY))
     )
 
     companion object {
         val ticks = Tag.Long("ticks")
+        val regeneration = Tag.Long("regeneration")
         val currentTick = Tag.Long("currentTick")
         val block = TagBlock("block")
         val entityID = Tag.Integer("entityID")

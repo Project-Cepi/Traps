@@ -4,6 +4,8 @@ import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockHandler
 import net.minestom.server.network.packet.server.play.BlockBreakAnimationPacket
 import net.minestom.server.utils.NamespaceID
+import world.cepi.kstom.util.sendBlockDamage
+import world.cepi.kstom.util.sendBreakBlockEffect
 import world.cepi.trap.generator.FallTrapGenerator
 import world.cepi.trap.util.Step
 import world.cepi.trap.util.SteppedTrap
@@ -35,31 +37,37 @@ object FallTrap : SteppedTrap() {
 
         val currentTick = tick.block.getTag(FallTrapGenerator.currentTick)!!
         val ticks = tick.block.getTag(FallTrapGenerator.ticks)!!
+        val regeneration = tick.block.getTag(FallTrapGenerator.regeneration)!!
+
+        if (tick.block.isAir && regeneration == currentTick) {
+            tick.instance.setBlock(
+                tick.blockPosition,
+                tick.block.getTag(FallTrapGenerator.block)!!.withHandler(this)
+                    .withTag(FallTrapGenerator.currentTick, 0)
+                    .withTag(FallTrapGenerator.ticks, ticks)
+                    .withTag(FallTrapGenerator.regeneration, regeneration)
+                    .withTag(FallTrapGenerator.block, tick.block)
+                    .withTag(FallTrapGenerator.entityID, tick.block.getTag(FallTrapGenerator.entityID)!!)
+            )
+        }
 
         if (ticks == currentTick) {
-            if (tick.block.isAir) {
-                tick.instance.setBlock(
-                    tick.blockPosition,
-                    tick.block.getTag(FallTrapGenerator.block)!!.withHandler(this)
-                        .withTag(FallTrapGenerator.ticks, ticks)
-                        .withTag(FallTrapGenerator.block, tick.block)
-                        .withTag(FallTrapGenerator.entityID, tick.block.getTag(FallTrapGenerator.entityID)!!)
-                )
-            } else {
-                tick.instance.setBlock(
-                    tick.blockPosition,
-                    Block.AIR.withHandler(this)
-                        .withTag(FallTrapGenerator.currentTick, 0)
-                        .withTag(FallTrapGenerator.ticks, ticks)
-                        .withTag(FallTrapGenerator.block, tick.block)
-                        .withTag(FallTrapGenerator.entityID, tick.block.getTag(FallTrapGenerator.entityID)!!)
-                )
+            tick.instance.setBlock(
+                tick.blockPosition,
+                Block.AIR.withHandler(this)
+                    .withTag(FallTrapGenerator.currentTick, 0)
+                    .withTag(FallTrapGenerator.ticks, ticks)
+                    .withTag(FallTrapGenerator.regeneration, regeneration)
+                    .withTag(FallTrapGenerator.block, tick.block)
+                    .withTag(FallTrapGenerator.entityID, tick.block.getTag(FallTrapGenerator.entityID)!!)
+            )
 
-                tick.instance.getChunkAt(tick.blockPosition)?.sendPacketToViewers(
-                    // The reason why we use an invalid value (such as 100) is that it removes the block break effect.
-                    BlockBreakAnimationPacket(tick.block.getTag(FallTrapGenerator.entityID)!!, tick.blockPosition,100)
-                )
-            }
+            tick.instance.getChunkAt(tick.blockPosition)
+                ?.sendBlockDamage(100, tick.blockPosition, tick.block.getTag(FallTrapGenerator.entityID)!!)
+
+            tick.instance.getChunkAt(tick.blockPosition)
+                ?.sendBreakBlockEffect(tick.blockPosition, tick.block)
+
         } else {
 
             tick.instance.setBlock(
@@ -69,10 +77,10 @@ object FallTrap : SteppedTrap() {
 
             if (tick.block.isAir) return
 
-            tick.instance.getChunkAt(tick.blockPosition)?.sendPacketToViewers(
-                BlockBreakAnimationPacket(tick.block.getTag(FallTrapGenerator.entityID)!!, tick.blockPosition,
-                    ((10 * currentTick) / (ticks)).toDouble().roundToInt().toByte()
-                )
+            tick.instance.getChunkAt(tick.blockPosition)?.sendBlockDamage(
+                ((10 * currentTick) / (ticks)).toDouble().roundToInt().toByte(),
+                tick.blockPosition,
+                tick.block.getTag(FallTrapGenerator.entityID)!!
             )
         }
     }

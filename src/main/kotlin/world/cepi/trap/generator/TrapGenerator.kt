@@ -2,16 +2,17 @@ package world.cepi.trap.generator
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.plus
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockHandler
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
+import world.cepi.itemextension.item.itemSerializationModule
 import world.cepi.kstom.item.get
 import world.cepi.kstom.item.item
 import world.cepi.kstom.item.set
@@ -30,7 +31,7 @@ sealed class TrapGenerator {
             FallTrapGenerator::class,
             VelocityTrapGenerator::class,
             PotionTrapGenerator::class,
-            ShopTrapGenerator::class
+            DisplayTrapGenerator::class
         )
 
         val module = SerializersModule {
@@ -39,9 +40,9 @@ sealed class TrapGenerator {
                 subclass(FallTrapGenerator::class)
                 subclass(VelocityTrapGenerator::class)
                 subclass(PotionTrapGenerator::class)
-                subclass(ShopTrapGenerator::class)
+                subclass(DisplayTrapGenerator::class)
             }
-        }
+        } + itemSerializationModule
     }
 
     fun generateItem() = item(Material.PURPLE_DYE) {

@@ -17,7 +17,7 @@ object TrapCommand : Kommand({
 
         val generatedSyntaxes = ClassArgumentGenerator(it)
 
-        val trapName = it.simpleName!!.dropLast("TrapGenerator".length)
+        val trapName = it.simpleName!!.dropLast("TrapGenerator".length).lowercase()
 
         generatedSyntaxes.applySyntax(this, create, trapName.literal()) { instance ->
 

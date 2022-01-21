@@ -5,9 +5,10 @@ import net.minestom.server.instance.block.BlockHandler
 import net.minestom.server.tag.Tag
 import net.minestom.server.utils.NamespaceID
 import world.cepi.itemextension.item.Item
+import world.cepi.itemextension.item.itemSerializationModule
 import world.cepi.kstom.item.get
 
-object ShopTrap : BlockHandler {
+object DisplayTrap : BlockHandler {
 
     override fun getNamespaceId(): NamespaceID {
         return NamespaceID.from("cepi:shop_trap")
@@ -15,12 +16,13 @@ object ShopTrap : BlockHandler {
 
     override fun onPlace(placement: BlockHandler.Placement) {
 
-        val itemEntity = ItemEntity(placement.block.get("item", serializer = Item.serializer())!!.renderItem(1))
+        val itemEntity = ItemEntity(placement.block.get<Item>("item", module = itemSerializationModule)!!.renderItem(1))
 
         itemEntity.isPickable = false
         itemEntity.setNoGravity(true)
+        itemEntity.isCustomNameVisible = true
 
-        itemEntity.setInstance(placement.instance, placement.blockPosition)
+        itemEntity.setInstance(placement.instance, placement.blockPosition.add(0.5, 0.25, 0.5))
 
         placement.instance.setBlock(
             placement.blockPosition,
