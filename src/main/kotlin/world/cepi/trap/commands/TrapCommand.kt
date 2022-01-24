@@ -1,5 +1,6 @@
 package world.cepi.trap.commands
 
+import net.minestom.server.command.builder.arguments.ArgumentType
 import net.minestom.server.entity.Player
 import world.cepi.kepi.command.subcommand.applyHelp
 import world.cepi.kepi.item.AddCreationalItem
@@ -9,9 +10,13 @@ import world.cepi.kstom.command.arguments.generation.generateSyntaxes
 import world.cepi.kstom.command.arguments.literal
 import world.cepi.kstom.command.kommand.Kommand
 import world.cepi.trap.generator.TrapGenerator
+import world.cepi.trap.generator.trapGenerator
 
 object TrapCommand : Kommand({
     val create by literal
+
+    val set by literal
+    val coordinates = ArgumentType.RelativeBlockPosition("trapCoordinates")
 
     TrapGenerator.trapGenerators.forEach {
 
@@ -25,6 +30,14 @@ object TrapCommand : Kommand({
 
             AddCreationalItem.put(player, instance.generateItem())
         }
+    }
+
+    syntax(set, coordinates).onlyPlayers {
+        val trap = player.itemInMainHand.trapGenerator ?: return@onlyPlayers
+
+        val relativeCoordinates = (!coordinates).from(player)
+
+        player.instance!!.setBlock(relativeCoordinates, trap.generateBlock(player.instance!!.getBlock(relativeCoordinates)).withHandler(trap.handler))
     }
 
     applyHelp {
