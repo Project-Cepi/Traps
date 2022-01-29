@@ -25,6 +25,8 @@ data class FallTrapGenerator(
     @param:DefaultTickDuration(20)
     @Serializable(with = DurationSerializer::class)
     val regeneration: Duration = Duration.of(20, TimeUnit.SERVER_TICK),
+    @param:DefaultBoolean(false)
+    val shouldDestroyAdjacentSameMaterial: Boolean = false
 ) : TrapGenerator() {
 
     @Transient
@@ -36,6 +38,7 @@ data class FallTrapGenerator(
             .withTag(Companion.regeneration, regeneration.toMillis() / MinecraftServer.TICK_MS)
             .withTag(FallTrapGenerator.block, block)
             .withTag(entityID, Random.nextInt(0, Int.MAX_VALUE))
+            .withTag(Companion.shouldDestroyAdjacentSameMaterial, if (shouldDestroyAdjacentSameMaterial) 0 else 1)
 
 
     override fun generateLore() = listOf(
@@ -50,6 +53,7 @@ data class FallTrapGenerator(
         val regeneration = Tag.Long("regeneration")
         val currentTick = Tag.Long("currentTick")
         val block = TagBlock("block")
+        val shouldDestroyAdjacentSameMaterial = Tag.Byte("shouldDestroyAdjacentSameMaterial")
         val entityID = Tag.Integer("entityID")
     }
 }

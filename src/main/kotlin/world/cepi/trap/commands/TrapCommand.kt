@@ -45,10 +45,12 @@ object TrapCommand : Kommand({
             Traps are a way to make blocks emit special properties whenever an action happens to it.
             
             Usage:
-            <yellow>/trap handle (trapName) (trapCoordinates) (...trapProperties)
+            <yellow>/trap create (trapName) [...trapProperties]
+            Right click to apply a trap to a block
             
-            <blue>TIP:
-            trapCoordinates automatically autocompletes to the block you are looking at.
+            You can run
+            <yellow>/trap apply (radius)
+            While holding a trap in your hand
         """.trimIndent()
     }
 
