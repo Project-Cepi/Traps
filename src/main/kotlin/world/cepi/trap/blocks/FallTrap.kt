@@ -51,7 +51,7 @@ object FallTrap : SteppedTrap() {
             return
         }
 
-        if (ticks == currentTick) {
+        if (!tick.block.isAir && ticks == currentTick) {
             tick.instance.setBlock(
                 tick.blockPosition,
                 Block.AIR.withHandler(this)
