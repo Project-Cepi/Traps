@@ -7,6 +7,7 @@ import world.cepi.kstom.command.unregister
 import world.cepi.kstom.event.listenOnly
 import world.cepi.kstom.util.log
 import world.cepi.kstom.util.node
+import world.cepi.trap.commands.SetBlockCommand
 import world.cepi.trap.commands.TrapCommand
 import world.cepi.trap.event.UseTrapHandler
 import world.cepi.trap.generator.TrapGenerator
@@ -20,6 +21,7 @@ class TrapExtension : Extension() {
     override fun initialize(): LoadStatus {
 
         TrapCommand.register()
+        SetBlockCommand.register()
 
         node.listenOnly(UseTrapHandler::used)
 
@@ -33,6 +35,7 @@ class TrapExtension : Extension() {
     override fun terminate() {
 
         TrapCommand.unregister()
+        SetBlockCommand.unregister()
 
         log.info("[TrapExtension] has been disabled!")
     }
